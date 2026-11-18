@@ -1,11 +1,16 @@
+from dotenv import load_dotenv
+load_dotenv()
 from flask import Flask, jsonify
 from flask_cors import CORS
-from routes import main_bp
+from core.config import Config
+from routes.chat_routes import chat_bp
 
 app = Flask(__name__)
-CORS(app) # این خط اجازه میده فرانت‌اند (React) به بک‌اند وصل بشه
+app.config.from_object(Config)
+CORS(app)
 
-app.register_blueprint(main_bp)
+# اتصال مسیرها (Routes) به برنامه اصلی
+app.register_blueprint(chat_bp)
 
 @app.errorhandler(404)
 def not_found(error):
